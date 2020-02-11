@@ -5,7 +5,7 @@ export interface P5Sketch {
     draw(p5: P5): void
 }
 
-export class MainSketch implements P5Sketch {
+class MainSketchClass implements P5Sketch {
     private instrumentMode: number = 0
     private layerNumber: number = 1
     private selectedShape: number = 0
@@ -66,7 +66,7 @@ export class MainSketch implements P5Sketch {
 
     public setup(p5: P5, canvasParentRef: any): void {
         p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(canvasParentRef) // use parent to render canvas in this ref (without that p5 render this canvas outside your component)
-        p5.background(100, 150, 100)
+        // p5.background(100, 150, 100)
 
         const buttondx = p5.createButton('+1')
         buttondx.position(p5.width * 0.87, p5.height * 0.8)
@@ -390,7 +390,7 @@ export class MainSketch implements P5Sketch {
     }
 
     //CREATE NEW LAYER FUNCTION
-    private createNewLayer() {
+    public createNewLayer() {
         this.instrumentMode = 1
 
         // myTimeout = setTimeout(function() {
@@ -400,7 +400,7 @@ export class MainSketch implements P5Sketch {
     }
 
     //TRACK SELECTION/ADD TRACK FUNCTION
-    private selectShape() {
+    public selectShape() {
         this.instrumentMode = 2 // we are in track_mode!
         this.selectedShape = this.maxNumShapes
         //if you press for 2 seconds you create a new track
@@ -413,7 +413,7 @@ export class MainSketch implements P5Sketch {
     }
 
     ///CHANGE SHAPE AND GO INTO CUSTOM SHAPE FUNCTION
-    private changeShape() {
+    public changeShape() {
         this.instrumentMode = 3 // we are in change_shape_mode!
         const myTimeout = setTimeout(() => {
             this.instrumentMode = 7
@@ -433,7 +433,7 @@ export class MainSketch implements P5Sketch {
     }
 
     //ROTATE SHAPE FUNCTION
-    private rotateShape() {
+    public rotateShape() {
         this.instrumentMode = 4 // we are in rotation_mode!
     }
 
@@ -465,3 +465,5 @@ export class MainSketch implements P5Sketch {
         }*/
     }
 }
+
+export const MainSketch = new MainSketchClass()
