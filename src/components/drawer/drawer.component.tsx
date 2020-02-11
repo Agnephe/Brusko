@@ -9,19 +9,15 @@ export class Drawer extends React.Component<any, any> {
     constructor(props: any) {
         super(props)
 
-        this.sketches = [ MainSketch ]
+        this.sketches = [MainSketch]
     }
 
     public render() {
         return (
-            <div>
-                {/*<button className="btn btn-primary" onClick={this.changeShape}>Change shape</button>*/}
-                <Sketch
-                    setup={this.setup as any}
-                    draw={this.draw as any}
-                />
-            </div>
-
+            <Sketch
+                setup={this.setup as any}
+                draw={this.draw as any}
+            />
         )
     }
 
@@ -31,9 +27,5 @@ export class Drawer extends React.Component<any, any> {
 
     private draw = (p5: P5) => {
         this.sketches[0].draw(p5)
-    }
-
-    private changeShape = () => {
-        (this.sketches[0] as typeof MainSketch).changeShape()
     }
 }

@@ -11,7 +11,7 @@ export class RootComponent extends React.Component<any, any> {
                 <Navbar/>
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-3" style={{ backgroundColor: "#ccd3e0" }}>
+                        <div className="col-3 control-column">
                             <ControlPanel/>
                         </div>
                         <div className="col-9"  style={{ backgroundColor: "#81A094" }}>

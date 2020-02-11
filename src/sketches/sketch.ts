@@ -20,9 +20,9 @@ class MainSketchClass implements P5Sketch {
     private shp1 = new Array(1)
     private rot2 = new Array(2)
     private shp2 = new Array(2)
-    private polygon_array = new Array(16 - 1)
+    private polygon_array = new Array(this.nGrain - 1)
     private polygon_array_c = new Array() // custom polygon array
-    private polygon_array2 = new Array(16 - 1)
+    private polygon_array2 = new Array(this.nGrain - 1)
 
     constructor() {
         this.initializeArrays()
