@@ -16,6 +16,7 @@ export class ControlPanel extends React.Component<any, any> {
                     <Button text="Track" icon="vector-square" onClick={this.onTrackClick} style={{ marginBottom: "12px" }}/>
                     <Button text="Rotate" icon="sync" onClick={this.onRotateClick} style={{ marginBottom: "12px" }}/>
                     <Button text="Layer" icon="plus" onClick={this.onLayerClick} style={{ marginBottom: "12px" }}/>
+                    <Button text="Delete shape" icon="times" type="danger" onClick={this.onShapeDeleteClick} style={{ marginBottom: "12px" }}/>
                 </Container>
             </div>
         )
@@ -35,5 +36,9 @@ export class ControlPanel extends React.Component<any, any> {
 
     private onLayerClick = () => {
         MainSketch.createNewLayer()
+    }
+
+    private onShapeDeleteClick = () => {
+        MainSketch.deleteShape()
     }
 }

@@ -375,7 +375,7 @@ class MainSketchClass implements P5Sketch {
         }
     }
 
-    private deleteShape() {
+    public deleteShape() {
         if (this.instrumentMode == 7) {
             this.instrumentMode = 2
         }
