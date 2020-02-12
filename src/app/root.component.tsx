@@ -3,6 +3,8 @@ import "./root.component.scss"
 import { Drawer } from "../components/drawer/drawer.component"
 import { Navbar } from "../components/navbar/navbar.component"
 import { ControlPanel } from "../components/control-panel/control-panel.component"
+import { FooterPanel } from "../components/footer-panel/footer-panel.component"
+import { RightPanel } from "../components/right-panel/right-panel.component"
 
 export class RootComponent extends React.Component<any, any> {
     public render() {
@@ -14,9 +16,15 @@ export class RootComponent extends React.Component<any, any> {
                         <div className="col-3 control-column">
                             <ControlPanel/>
                         </div>
-                        <div className="col-9"  style={{ backgroundColor: "#81A094" }}>
+                        <div className="col-6"  style={{ backgroundColor: "#81A094" }}>
                             <Drawer/>
                         </div>
+                        <div className="col-3 control-column">
+                            <RightPanel/>
+                        </div>
+                    </div>
+                    <div className="row" style={{ padding: "20px" }}>
+                        <FooterPanel/>
                     </div>
                 </div>
             </div>
