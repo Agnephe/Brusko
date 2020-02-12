@@ -13,13 +13,13 @@ export class RootComponent extends React.Component<any, any> {
                 <Navbar/>
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-3 control-column">
+                        <div className="col-2 control-column">
                             <ControlPanel/>
                         </div>
-                        <div className="col-6"  style={{ backgroundColor: "#81A094" }}>
+                        <div className="col-8"  style={{ backgroundColor: "#81A094" }}>
                             <Drawer/>
                         </div>
-                        <div className="col-3 control-column">
+                        <div className="col-2 control-column">
                             <RightPanel/>
                         </div>
                     </div>

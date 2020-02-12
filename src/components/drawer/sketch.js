@@ -1,6 +1,11 @@
+import { RightPanel } from "../right-panel/right-panel.component"
+
 var instrumentMode // if this variable is = 0 we are outside the mode selection, if = 1 we are in 'layer mode', if = 2 we are in 'track_selection mode', if = 3 we are in 'change_shape_mode', if = 4 we are in 'rotation mode', if = 5 we are in 'note mode', if = 6 we are in 'sample mode', if = 7 we are in custom shape mode;
 
 let degree = 0
+
+var posCanvasW=windowWidth-RightPanel.width
+var posCanvasH=windowHeight-RightPanel.height
 
 var myTimeout
 var layerNumber = 1
