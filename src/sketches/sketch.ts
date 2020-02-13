@@ -30,7 +30,6 @@ class MainSketchClass implements P5Sketch {
     private polygon_array = new Array(this.nGrain - 1)
     private polygon_array_c = new Array() // custom polygon array
     private polygon_array2 = new Array(this.nGrain - 1)
-    private selText= document.getElementById("idtimeSign").value;
 
     constructor() {
         this.initializeArrays()
@@ -475,6 +474,5 @@ class MainSketchClass implements P5Sketch {
     }
 }
 
-var selText= document.getElementById("idtimeSign").value;
 
 export const MainSketch = new MainSketchClass()
