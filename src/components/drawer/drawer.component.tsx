@@ -21,7 +21,7 @@ export class Drawer extends React.Component<any, any> {
         )
     }
 
-    private setup = (p5: P5, canvasParentRef: any) => {
+    private setup = (p5: P5, canvasParentRef: "centralSquare") => {
         this.sketches[0].setup(p5, canvasParentRef)
     }
 

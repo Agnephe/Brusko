@@ -4,9 +4,6 @@ var instrumentMode // if this variable is = 0 we are outside the mode selection,
 
 let degree = 0
 
-var posCanvasW=windowWidth-RightPanel.width
-var posCanvasH=windowHeight-RightPanel.height
-
 var myTimeout
 var layerNumber = 1
 var kindOfShape = 0
@@ -17,6 +14,7 @@ var maxNumShape2 = 1
 var numCustShapes = 0
 var canvas
 var firstLayerLandW = 500
+var clockCircleScaleSize = 1
 //var vertices = [];
 //var vertices2 = [];
 var buttonsx
@@ -119,7 +117,7 @@ function updateArrays() {
 
 //SETUP
 function setup() {
-    canvas = createCanvas(windowWidth, windowHeight)
+    canvas = createCanvas(windowWidth,windowHeight)
     background(100, 150, 100)
 
 
@@ -180,19 +178,30 @@ function setup() {
         }
         selectedShape = maxNumShapes
     }
-
+    if(layerNumber == 2){
+        shp2.splice(selectedShape2-1,1)
+        rot2.splice(selectedShape2-1,1)
+        maxNumShape2--
+        //start from skratch
+        if(maxNumShape2 == 0){
+          instrumentMode = 0
+        }
+        selectedShape2=maxNumShape2
+        }
+       }
+    
     //slider
     /* slider = createSlider(500,1000,600);
      slider.position(width*0.8, height*0.85);
      slider.changed(updateSize);*/
 
-}
+
 
 
 //DRAW
 function draw() {
     fill(255)
-    ellipse(windowWidth / 2, windowHeight / 2, firstLayerLandW, firstLayerLandW)
+    ellipse(windowWidth / 2, windowHeight / 2, circleLandW, circleLandW)
     //if (layerNumber == 2) {
     //  stroke(195, 195, 195);
     //}
@@ -201,8 +210,8 @@ function draw() {
     var step = TWO_PI / nGrain
     push()
     for (let i = 0; i < nGrain; i++) {
-        var grainX = windowWidth / 2 + (cos(angle) * (firstLayerLandW / 2))
-        var grainY = windowHeight / 2 + (sin(angle) * (firstLayerLandW / 2))
+        var grainX = windowWidth / 2 + (cos(angle) * (circleLandW / 2))
+        var grainY = windowHeight / 2 + (sin(angle) * (circleLandW / 2))
         //var grains = createVector(grainX, grainY);
         //vertices.push(grains);
         strokeWeight(10)
@@ -213,10 +222,10 @@ function draw() {
     //END NODES
 
     //Custom Shape Mode
-    if (instrumentMode == 7) {
+    if (instrumentMode == 7 && layerNumber == 1) {
         push()
-        var selGrainX = windowWidth / 2 + (cos(angle + (step * currentGrain)) * (firstLayerLandW / 2))
-        var selGrainY = windowHeight / 2 + (sin(angle + (step * currentGrain)) * (firstLayerLandW / 2))
+        var selGrainX = windowWidth / 2 + (cos(angle + (step * currentGrain)) * (circleLandW / 2))
+        var selGrainY = windowHeight / 2 + (sin(angle + (step * currentGrain)) * (circleLandW / 2))
         var grains = createVector(grainX, grainY)
         //vertices.push(grains);
         strokeWeight(10)
@@ -273,15 +282,42 @@ function draw() {
         // TO BE FIXED! the circular array is useless, we can use polygon_array_ALL as a database of all the possible shapes. Then, with shp1, shp2, etc. we point the shape we need. For now i set it to polygon_array_ALL[0];
 
 
-        polygon_spec(0, 0, (firstLayerLandW / 2), polygon_array[shp1[i - 1]])
+        polygon_spec(0, 0, (circleLandW / 2), polygon_array[shp1[i - 1]])
         pop()
     }
 
     if (layerNumber == 2) {
         fill(250, 250, 250, 70)
         stroke(0)
-        ellipse(windowWidth / 2, windowHeight / 2, 600, 600)
+        ellipse(windowWidth / 2, windowHeight / 2, circleLandW, circleLandW)
 
+//CLOCK RING
+noFill()
+strokeWeight(17)
+stroke(250,250,250,70)
+ellipse(windowWidth/2,windowHeight/2, 550 *clockCircleScaleSize, 550 *clockCircleScaleSize)
+strokeWeight(1)
+
+stroke(.5);
+ellipse(windowWidth/2,windowHeight/2, 570 *clockCircleScaleSize, 570 *clockCircleScaleSize)
+ellipse(windowWidth/2,windowHeight/2, 560 *clockCircleScaleSize, 560 *clockCircleScaleSize)
+ellipse(windowWidth/2,windowHeight/2, 550 *clockCircleScaleSize, 550 *clockCircleScaleSize)
+ellipse(windowWidth/2,windowHeight/2, 540 *clockCircleScaleSize, 540 *clockCircleScaleSize)
+ellipse(windowWidth/2,windowHeight/2, 530 *clockCircleScaleSize, 530 *clockCircleScaleSize)
+
+//CLOCK RING "GRAINS"
+push();
+var angle2 = (TWO_PI / 4) * 3
+var step2 = TWO_PI / nGrain
+
+for (let j = 0; j < nGrain; j++) {
+  var grainX2 = windowWidth/2 + (cos(angle2) * 266 *clockCircleScaleSize) //320 effects how much bigger the second circle is should be half the width and height of the elipse
+  var grainY2 = windowHeight/2 + (sin(angle2) * 266 *clockCircleScaleSize)
+  strokeWeight(3)
+  line(grainX2, grainY2, grainX2 + (cos(angle2)*18), grainY2 + (sin(angle2)*18))
+  angle2 += step2
+}
+pop()
 
         //Grains for Layer 2
         push()
@@ -289,8 +325,8 @@ function draw() {
         var step2 = TWO_PI / nGrain
 
         for (let j = 0; j < nGrain; j++) {
-            var grainX2 = windowWidth / 2 + (cos(angle2) * 300) //320 effects how much bigger the second circle is should be half the width and height of the elipse
-            var grainY2 = windowHeight / 2 + (sin(angle2) * 300)
+            var grainX2 = windowWidth / 2 + (cos(angle2) * circleLandW/2) //320 effects how much bigger the second circle is should be half the width and height of the elipse
+            var grainY2 = windowHeight / 2 + (sin(angle2) * circleLandW/2)
             var grains2 = createVector(grainX2, grainY2)
             //vertices.push(grains2);
             strokeWeight(10)
@@ -366,154 +402,248 @@ function encoderInc() {
     }
 
     //INC TRACK SELECTION MODE
-    if (instrumentMode == 2 && selectedShape != 0) {
-        //change track
-        selectedShape++
-    }
+  if (instrumentMode == 2 && selectedShape != 0 && layerNumber == 1) {
+    //change track
+    selectedShape++
+  }
+  if (instrumentMode == 2 && layerNumber ==2){
+    selectedShape = 0
+    selectedShape2++
+  }
 
 
     //INC CHANGE SHAPE MODE
-    if (instrumentMode == 3 && shp1[selectedShape - 1] != polygon_array.length) {
-        //polygon_array_ALL[selectedShape-1][kindOfShape]=polygon_array_ALL[selectedShape-1][kindOfShape++];
-        shp1[selectedShape - 1] = shp1[selectedShape - 1] + 1
+  if (layerNumber == 1 && instrumentMode == 3 && shp1[selectedShape - 1] != polygon_array.length) {
+    //polygon_array_ALL[selectedShape-1][kindOfShape]=polygon_array_ALL[selectedShape-1][kindOfShape++];
+    shp1[selectedShape - 1] = shp1[selectedShape - 1] + 1
 
-    }
-    if (instrumentMode == 3 && shp1[selectedShape - 1] == polygon_array.length) {
-        shp1[selectedShape - 1] = 0
-    }
+  }
+  if (layerNumber == 1 && instrumentMode == 3 && shp1[selectedShape - 1] == polygon_array.length) {
+    shp1[selectedShape - 1] = 0
+  }
+  if (layerNumber == 2 && instrumentMode == 3 && shp2[selectedShape2 - 1] != polygon_array2.length) {
+    //polygon_array_ALL[selectedShape-1][kindOfShape]=polygon_array_ALL[selectedShape-1][kindOfShape++];
+    shp2[selectedShape2 - 1] = shp2[selectedShape2 - 1] + 1
 
-    //INC CUSTOM SHAPE MODE
-    if (instrumentMode == 7) {
-        if (currentGrain == nGrain - 1) {
-            currentGrain = 0
-        } else {
-            currentGrain++
-        }
-    }
+  }
+  if (layerNumber == 2 && instrumentMode == 3 && shp2[selectedShape2 - 1] == polygon_array2.length) {
+    shp2[selectedShape2 - 1] = 0
+  }
 
-    //INC CHANGE ROTATION MODE
-    if (instrumentMode == 4 && selectedShape != 0) {
-        //rotate the selected shape
-        rot1[selectedShape - 1] = rot1[selectedShape - 1] + 1
+  //INC CUSTOM SHAPE MODE
+  if (layerNumber == 1 && instrumentMode == 7) {
+    if (currentGrain == nGrain - 1) {
+      currentGrain = 0
+    } else {
+      currentGrain++
     }
+  }
+  if (layerNumber == 2 && instrumentMode == 7) {
+    if (currentGrain2 == nGrain - 1) {
+      currentGrain2 = 0
+    } else {
+      currentGrain2++
+    }
+  }
+
+  //INC CHANGE ROTATION MODE
+  if (layerNumber == 1 && instrumentMode == 4 && selectedShape != 0) {
+    //rotate the selected shape
+    rot1[selectedShape - 1] = rot1[selectedShape - 1] + 1
+  }
+  if (layerNumber == 2 && instrumentMode == 4 && selectedShape2 != 0) {
+    //rotate the selected shape
+    rot2[selectedShape2 - 1] = rot2[selectedShape2 - 1] + 1
+  }
 }
+
 
 //ENCODER DECREASE BUTTON FUNCTION
 function encoderDec() {
 
     //LAYER SELECTION MODE
     if (instrumentMode == 1 && layerNumber == 1) {
-        layerNumber = 2
+      layerNumber = 2;
     } else if (instrumentMode == 1 && layerNumber == 2) {
-        layerNumber = 1
-
+      layerNumber = 1;
+  
     }
-
+  
     //TRACK SELECTION MODE
-    if (instrumentMode == 2 && selectedShape != (0 || 1)) {
-        selectedShape--
-    } else if (instrumentMode == 2 && selectedShape == 1) {
-        selectedShape = maxNumShapes
+    if (layerNumber == 1 && instrumentMode == 2 && selectedShape != (0 || 1)) {
+      selectedShape--;
+    } else if (layerNumber == 1 && instrumentMode == 2 && selectedShape == 1) {
+      selectedShape = maxNumShapes;
     }
-
+    if (layerNumber == 2 && instrumentMode == 2 && selectedShape2 != (0 || 1)) {
+      selectedShape2--;
+    } else if (layerNumber == 2 && instrumentMode == 2 && selectedShape2 == 1) {
+      selectedShape2 = maxNumShape2;
+    }
+  
     //then CHANGE SHAPE MODE
-    if (instrumentMode == 3 && shp1[selectedShape - 1] != 0) {
-        shp1[selectedShape - 1] = shp1[selectedShape - 1] - 1
-    } else if (instrumentMode == 3 && shp1[selectedShape - 1] == 0) {
-        shp1[selectedShape - 1] = polygon_array.length - 1
+    if (layerNumber == 1 && instrumentMode == 3 && shp1[selectedShape - 1] != 0) {
+      shp1[selectedShape - 1] = shp1[selectedShape - 1] - 1;
+    } else if (layerNumber == 1 && instrumentMode == 3 && shp1[selectedShape - 1] == 0) {
+      shp1[selectedShape - 1] = polygon_array.length-1;
     }
-
-
+    if (layerNumber == 2 && instrumentMode == 3 && shp2[selectedShape2 - 1] != 0) {
+      shp2[selectedShape2 - 1] = shp2[selectedShape2 - 1] - 1;
+    } else if (layerNumber == 2 && instrumentMode == 3 && shp2[selectedShape2 - 1] == 0) {
+      shp2[selectedShape2 - 1] = polygon_array2.length-1;
+    }
+  
+  
     //CUSTOM SHAPE MODE
-    if (instrumentMode == 7) {
-        if (currentGrain == 0) {
-            currentGrain = nGrain - 1
-        } else {
-            currentGrain--
-        }
-
+    if (layerNumber == 1 && instrumentMode == 7) {
+      if (currentGrain == 0) {
+        currentGrain = nGrain - 1;
+      } else {
+        currentGrain--
+      };
     }
-
+    if (layerNumber == 2 && instrumentMode == 7) {
+      if (currentGrain2 == 0) {
+        currentGrain2 = nGrain - 1;
+      } else {
+        currentGrain2--
+      };
+    }
+  
     //the CHANGE ROTATION MODE
-    if (instrumentMode == 4 && selectedShape != 0) {
-        rot1[selectedShape - 1] = rot1[selectedShape - 1] - 1
+    if (layerNumber == 1 && instrumentMode == 4 && selectedShape != 0) {
+      rot1[selectedShape - 1] = rot1[selectedShape - 1] - 1;
     }
-}
-
-//ENCODER BUTTON FUNCTION
-function encoderButt() {
-    if (instrumentMode == 7) {
-        if (polygon_array_c.includes(currentGrain)) {
-            for (var i = 0; i < polygon_array_c.length; i++) {
-                if (polygon_array_c[i] === currentGrain) {
-                    polygon_array_c.splice(i, 1)
-                }
-            }
-        } else {
-            polygon_array_c.push(currentGrain)
+    if (layerNumber == 2 && instrumentMode == 4 && selectedShape2 != 0) {
+      rot2[selectedShape2 - 1] = rot2[selectedShape2 - 1] - 1;
+    }
+  }
+  
+  //ENCODER BUTTON FUNCTION
+  function encoderButt() {
+    if (layerNumber == 1 && instrumentMode == 7) {
+      if (polygon_array_c.includes(currentGrain)) {
+        for (var i = 0; i < polygon_array_c.length; i++) {
+          if (polygon_array_c[i] === currentGrain) {
+            polygon_array_c.splice(i, 1)
+          }
         }
-        polygon_array_c.sort(function(a, b) {
-            return a - b
-        })
-
+      } else {
+        polygon_array_c.push(currentGrain)
+      }
+      polygon_array_c.sort(function(a, b) {
+        return a - b
+      })
+  
     }
-}
-
-//SLIDER FUNCTION DISABLED
-/*function updateSize(){
-  NewCircle.radiusx==slider.value(); 
-  NewCircle.radiusy==slider.value();
-}*/
-
-//CREATE NEW LAYER FUNCTION 
-function createNewLayer() {
+    if (layerNumber == 2 && instrumentMode == 7) {
+      if (polygon_array_c.includes(currentGrain2)) {
+        for (var i = 0; i < polygon_array_c.length; i++) {
+          if (polygon_array_c[i] === currentGrain2) {
+            polygon_array_c.splice(i, 1)
+          }
+        }
+      } else {
+        polygon_array_c.push(currentGrain2)
+      }
+      polygon_array_c.sort(function(a, b) {
+        return a - b
+      })
+  
+    }
+  }
+  
+  //SLIDER FUNCTION DISABLED
+  /*function updateSize(){
+    NewCircle.radiusx==slider.value(); 
+    NewCircle.radiusy==slider.value();
+  }*/
+  
+  //CREATE NEW LAYER FUNCTION 
+  function createNewLayer() {
     instrumentMode = 1
-
-    // myTimeout = setTimeout(function() {
-    layerNumber++
-
-    //, 2000);
-}
-
-//TRACK SELECTION/ADD TRACK FUNCTION
-function selectShape() {
-    instrumentMode = 2 // we are in track_mode!
-    selectedShape = maxNumShapes
-    //if you press for 2 seconds you create a new track
-    if (instrumentMode != 0) {
-        myTimeout = setTimeout(function() {
-            maxNumShapes = maxNumShapes + 1
-            updateArrays()
-        }, 2000)
-    }
-}
-
-///CHANGE SHAPE AND GO INTO CUSTOM SHAPE FUNCTION
-function changeShape() {
-    instrumentMode = 3 // we are in change_shape_mode!
+  
     myTimeout = setTimeout(function() {
-        instrumentMode = 7
-        maxNumShapes++
-        numCustShapes++
+      layerNumber++
+  
+    }, 2000)
+  }
+  
+  //TRACK SELECTION/ADD TRACK FUNCTION
+  function selectShape() {
+    instrumentMode = 2 // we are in track_mode!
+    if (layerNumber == 1){ 
         selectedShape = maxNumShapes
-
-        if (numCustShapes > 0) { //resets current grain to 0
-            currentGrain = 0
+        //if you press for 2 seconds you create a new track
+        if(instrumentMode != 0){
+        myTimeout = setTimeout(function() {
+          maxNumShapes = maxNumShapes + 1
+          updateArrays()
+        }, 2000)
+        }
+      }
+    if (layerNumber == 2){
+      selectedShape2 = maxNumShape2
+      if (instrumentMode != 0){
+        myTimeout = setTimeout(function() {
+          maxNumShape2 = maxNumShape2 + 1
+          updateArrays()
+        }, 2000)
+      }
+    }
+  }
+  ///CHANGE SHAPE AND GO INTO CUSTOM SHAPE FUNCTION
+  function changeShape() {
+    instrumentMode = 3; // we are in change_shape_mode!
+    if (layerNumber == 1){
+      selectedShape = maxNumShapes
+    }
+    if (layerNumber == 2){
+      selectedShape2 = maxNumShape2
+    }
+    myTimeout = setTimeout(function() {
+      if (layerNumber == 1){
+      instrumentMode = 7
+      maxNumShapes++
+      numCustShapes++
+      selectedShape=maxNumShapes
+      
+      if (numCustShapes>0){ //resets current grain to 0 
+        currentGrain=0
+      }
+      polygon_array_c = new Array()
+      //splice(maxNumShapes, 0, polygon_array_c);
+      polygon_array.push(polygon_array_c)
+      shp1.push(polygon_array.length-1)
+      updateArrays()
+    }
+    
+    if (layerNumber == 2){
+      
+        instrumentMode = 7
+        maxNumShape2++
+        numCustShapes++
+        selectedShape2=maxNumShape2
+        
+        if (numCustShapes>0){ //resets current grain to 0 
+          currentGrain=0
         }
         polygon_array_c = new Array()
         //splice(maxNumShapes, 0, polygon_array_c);
-        polygon_array.push(polygon_array_c)
-        shp1.push(polygon_array.length - 1)
+        polygon_array2.push(polygon_array_c)
+        shp2.push(polygon_array2.length-1)
         updateArrays()
-    }, 2000)
-}
-
-//ROTATE SHAPE FUNCTION
-function rotateShape() {
+      
+    }
+  }, 2000)
+  }
+  
+  //ROTATE SHAPE FUNCTION
+  function rotateShape() {
     instrumentMode = 4 // we are in rotation_mode!
-}
-
-
-function mouseReleased() {
+  }
+  
+  
+  function mouseReleased() {
     clearTimeout(myTimeout)
-}
+  }

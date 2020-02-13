@@ -1,19 +1,26 @@
 import * as P5 from "p5"
 
 export interface P5Sketch {
-    setup(p5: P5, canvasParentRef: any): void
+    setup(p5: P5, canvasParentRef: "centralSquare"): void
     draw(p5: P5): void
 }
 
 class MainSketchClass implements P5Sketch {
+    private comboBox = 0
+    private canvasWidth = 800
+    private canvasHeight = 600
     private instrumentMode: number = 0
     private layerNumber: number = 1
+    private kindOfShape: number = 0
     private selectedShape: number = 0
     private selectedShape2: number = 0
     private maxNumShapes = 1
     private maxNumShape2 = 2
     private numCustShapes = 0
+    private circleLandW = 500
+    private clockCircleScaleSize = 1
     private currentGrain = 0
+    private currentGrain2 = 0
     private nGrain = 16
     private firstLayerLandW = 500
     private rot1 = new Array(1)
@@ -23,6 +30,7 @@ class MainSketchClass implements P5Sketch {
     private polygon_array = new Array(this.nGrain - 1)
     private polygon_array_c = new Array() // custom polygon array
     private polygon_array2 = new Array(this.nGrain - 1)
+    private selText= document.getElementById("idtimeSign").value;
 
     constructor() {
         this.initializeArrays()
@@ -64,9 +72,10 @@ class MainSketchClass implements P5Sketch {
         }
     }
 
-    public setup(p5: P5, canvasParentRef: any): void {
-        p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(canvasParentRef) // use parent to render canvas in this ref (without that p5 render this canvas outside your component)
-        // p5.background(100, 150, 100)
+    public setup(p5: P5, canvasParentRef: "centralSquare"): void {
+        p5.createCanvas(p5.width=this.canvasWidth, p5.height=this.canvasHeight).parent(canvasParentRef) // use parent to render canvas in this ref (without that p5 render this canvas outside your component)
+        
+        p5.background(100, 150, 100)
 
         const buttondx = p5.createButton('+1')
         buttondx.position(p5.width * 0.87, p5.height * 0.8)
@@ -110,7 +119,7 @@ class MainSketchClass implements P5Sketch {
 
     public draw(p5: P5): void {
         p5.fill(255)
-        p5.ellipse(p5.windowWidth / 2, p5.windowHeight / 2, this.firstLayerLandW, this.firstLayerLandW)
+        p5.ellipse(this.canvasWidth / 2, this.canvasHeight / 2, this.firstLayerLandW, this.firstLayerLandW)
         //if (layerNumber == 2) {
         //  p5.stroke(195, 195, 195);
         //}
@@ -121,8 +130,8 @@ class MainSketchClass implements P5Sketch {
         let grainX
         let grainY
         for (let i = 0; i < this.nGrain; i++) {
-            grainX = p5.windowWidth / 2 + (p5.cos(angle) * (this.firstLayerLandW / 2))
-            grainY = p5.windowHeight / 2 + (p5.sin(angle) * (this.firstLayerLandW / 2))
+            grainX = this.canvasWidth / 2 + (p5.cos(angle) * (this.firstLayerLandW / 2))
+            grainY = this.canvasHeight / 2 + (p5.sin(angle) * (this.firstLayerLandW / 2))
             //var grains = p5.createVector(grainX, grainY);
             //vertices.p5.push(grains);
             p5.strokeWeight(10)
@@ -136,8 +145,8 @@ class MainSketchClass implements P5Sketch {
         //Custom Shape Mode
         if (this.instrumentMode == 7) {
             p5.push()
-            let selGrainX = p5.windowWidth / 2 + (p5.cos(angle + (step * this.currentGrain)) * (this.firstLayerLandW / 2))
-            let selGrainY = p5.windowHeight / 2 + (p5.sin(angle + (step * this.currentGrain)) * (this.firstLayerLandW / 2))
+            let selGrainX = this.canvasWidth / 2 + (p5.cos(angle + (step * this.currentGrain)) * (this.firstLayerLandW / 2))
+            let selGrainY = this.canvasHeight / 2 + (p5.sin(angle + (step * this.currentGrain)) * (this.firstLayerLandW / 2))
             let grains = p5.createVector(grainX, grainY)
             //vertices.p5.push(grains);
             p5.strokeWeight(10)
@@ -202,7 +211,7 @@ class MainSketchClass implements P5Sketch {
         if (this.layerNumber == 2) {
             p5.fill(250, 250, 250, 70)
             p5.stroke(0)
-            p5.ellipse(p5.windowWidth / 2, p5.windowHeight / 2, 600, 600)
+            p5.ellipse(this.canvasWidth / 2, this.canvasHeight / 2, 600, 600)
 
 
             //Grains for Layer 2
@@ -211,8 +220,8 @@ class MainSketchClass implements P5Sketch {
             let step2 = p5.TWO_PI / this.nGrain
 
             for (let j = 0; j < this.nGrain; j++) {
-                let grainX2 = p5.windowWidth / 2 + (p5.cos(angle2) * 300) //320 effects how much bigger the second circle is should be half the width and height of the elipse
-                let grainY2 = p5.windowHeight / 2 + (p5.sin(angle2) * 300)
+                let grainX2 = this.canvasWidth / 2 + (p5.cos(angle2) * 300) //320 effects how much bigger the second circle is should be half the width and height of the elipse
+                let grainY2 = this.canvasHeight / 2 + (p5.sin(angle2) * 300)
                 let grains2 = p5.createVector(grainX2, grainY2)
                 //vertices.push(grains2);
                 p5.strokeWeight(10)
@@ -235,8 +244,8 @@ class MainSketchClass implements P5Sketch {
                     let count = 0
                     for (let a = 0; a < p5.TWO_PI; a += angle) {
                         if (count == corr_node) {
-                            let sx = p5.windowWidth + p5.cos(a - (p5.TWO_PI / 4)) * radius
-                            let sy = p5.windowHeight + p5.sin(a - (p5.TWO_PI / 4)) * radius
+                            let sx = this.canvasWidth + p5.cos(a - (p5.TWO_PI / 4)) * radius
+                            let sy = this.canvasHeight + p5.sin(a - (p5.TWO_PI / 4)) * radius
                             p5.vertex(sx, sy)
                         }
                         count++
@@ -465,5 +474,7 @@ class MainSketchClass implements P5Sketch {
         }*/
     }
 }
+
+var selText= document.getElementById("idtimeSign").value;
 
 export const MainSketch = new MainSketchClass()
