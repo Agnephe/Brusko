@@ -45,8 +45,8 @@ Great. That’s all installation for tone.
 
 Our TS lint is very rigid and doesn’t like modules that don’t have types, which sadly is the case of the Tone lib. In order to be able to use tone without our lint freaking out we’ll have to disable `noImplicitAny`
 For that go to the tsconfig.json and change
-###`“noImplicitAny”: true,` to ###`“noImplicitAny”: false,`
-I would recommend doing the same for ###`noUnusedLocals` as I think it is a bit unnecessary. But feel free to choose.
+`“noImplicitAny”: true,` to `“noImplicitAny”: false,`
+I would recommend doing the same for `noUnusedLocals` as I think it is a bit unnecessary. But feel free to choose.
 
 ## Learn More
 
