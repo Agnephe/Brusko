@@ -9,5 +9,5 @@ export const Container = styled.div`
 `
 
 export const ActionButton = styled(Button)`
-    margin-bottom: ${spacing[2]}px;
+    margin-bottom: ${spacing[100]}px;
 `
